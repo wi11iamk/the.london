@@ -1,0 +1,49 @@
+---
+---
+
+/* base styles */
+html, body { height: 100% }
+body {
+  margin: 0;
+  background: #d7e3eb;  /* glacier paper */
+  color: #0b0c10;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  text-transform: lowercase;
+  letter-spacing: .2em;
+  font-size: 1.3em;
+  line-height: 2;
+  font-weight: 300;
+  text-align: center;
+}
+.container {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+}
+
+/* animated greys per letter */
+.anim-text-flow {
+  $steps: 20;                  // keyframe steps
+  $dur: 50s;                   // slow drift
+  $count: 100;                 // how many letters to stagger
+  $stagger: .2s;               // delay between letters
+
+  span {
+    animation: anim-text-flow-keys $dur infinite alternate forwards;
+  }
+
+  // neutral greys: randomize lightness at each keyframe step
+  @keyframes anim-text-flow-keys {
+    @for $i from 0 through $steps {
+      #{percentage($i / $steps)} {
+        $L: 12 + random(84);    // 12%..95%
+        color: hsl(0, 0%, #{$L}%);
+      }
+    }
+  }
+
+  // stagger per letter
+  $total: $count * $stagger;
+  @for $i from 1 through $count {
+    span:nth-of-type(#{$i}) { animation-delay: #{($i * $stagger) - $total}; }
+  }
+}
