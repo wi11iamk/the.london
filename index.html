@@ -1,8 +1,23 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>The London</title>
+  <meta name="description" content="The London — production company. Coming soon.">
+  <link rel="canonical" href="https://the.london/">
+
+  <!-- Social preview (replace og.jpg when you have one) -->
+  <meta property="og:title" content="The London">
+  <meta property="og:description" content="With thought, step by step.">
+  <meta property="og:url" content="https://the.london/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://the.london/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Font + compiled CSS (Jekyll compiles /assets/css/style.scss → style.css) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
@@ -11,13 +26,7 @@
     <span class="txt anim-text-flow">the.london/comingsoon.</span>
   </div>
 
-  <!-- per-letter spanizer -->
-  <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const el = document.querySelector('.txt');
-    if (!el) return;
-    el.innerHTML = '<span>' + el.textContent.trim().split('').join('</span><span>') + '</span>';
-  });
-  </script>
+  <!-- Per-letter spanizer (vanilla JS) -->
+  <script defer src="/assets/js/main.js"></script>
 </body>
 </html>
