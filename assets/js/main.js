@@ -1,5 +1,8 @@
-// Wrap each character in a <span> so CSS can animate letters individually
-$('.txt').html(function (_i, html) {
-  const chars = html.trim().split('');
-  return '<span>' + chars.join('</span><span>') + '</span>';
+// Split .txt into per-character <span> so CSS can animate letters individually
+document.addEventListener('DOMContentLoaded', () => {
+  const el = document.querySelector('.txt');
+  if (!el) return;
+  const chars = el.textContent.trim().split('');
+  el.innerHTML = '<span>' + chars.join('</span><span>') + '</span>';
+  el.classList.add('is-ready');
 });
