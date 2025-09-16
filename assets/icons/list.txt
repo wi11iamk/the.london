@@ -1,0 +1,5 @@
+Icon List 
+Android Chrome 192x192
+Android Chrome 512x512
+Favicon 16x16
+Favicon 32x32
