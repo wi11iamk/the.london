@@ -2,31 +2,82 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <title>The London — Stories & Films</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Ratio et veritas. A portfolio of films, scripts, and storyboards from The London." />
+  <link rel="canonical" href="https://the.london/" />
 
-  <title>The London</title>
-  <meta name="description" content="The London — production company. Coming soon.">
-  <link rel="canonical" href="https://the.london/">
+  <!-- Icons (keep these at the root for broad client support) -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0B0C10">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#0B0C10">
 
-  <!-- Social preview (replace og.jpg when you have one) -->
-  <meta property="og:title" content="The London">
-  <meta property="og:description" content="With thought, step by step.">
-  <meta property="og:url" content="https://the.london/">
+  <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://the.london/og.jpg">
+  <meta property="og:title" content="The London — Stories & Films">
+  <meta property="og:description" content="Ratio et veritas. A portfolio of films, scripts, and storyboards.">
+  <meta property="og:url" content="https://the.london/">
+  <meta property="og:image" content="https://the.london/assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The London logo">
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- Font + compiled CSS (Jekyll compiles /assets/css/style.scss → style.css) -->
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/site.css" />
 </head>
 <body>
-  <div class="container">
-    <span class="txt anim-text-flow">the.london/comingsoon.</span>
-  </div>
+  <div class="wrap">
+    <header class="site-header" aria-label="Site header">
+      <a class="brand" href="/">THE&nbsp;LONDON</a>
+      <nav class="nav" aria-label="Primary">
+        <a href="/works/">Works</a>
+        <a href="/about/">About</a>
+        <a href="/contact/">Contact</a>
+      </nav>
+    </header>
 
-  <!-- Per-letter spanizer (vanilla JS) -->
-  <script defer src="/assets/js/main.js"></script>
+    <!-- Hero (logo reel). Will gracefully hide for reduced-motion users -->
+    <section class="hero hero--logo" aria-label="Logo reel">
+      <video
+        src="/assets/logo/theLondon_4k24.mp4"
+        playsinline muted autoplay loop preload="metadata"
+        poster="/assets/logo/poster.jpg"
+        aria-label="The London logo reel"></video>
+      <p class="tagline">Unexpected and methodical.</p>
+    </section>
+
+    <!-- Featured works (replace with real entries as you add them) -->
+    <section class="section" aria-labelledby="works-h">
+      <h2 id="works-h" class="h2">Featured</h2>
+      <div class="grid">
+        <article class="card">
+          <a href="/works/extended-play/">
+            <img class="thumb" src="/images/extended-play/poster.jpg" alt="Extended Play poster">
+            <div class="meta">
+              <div class="kicker">Short Film</div>
+              <div class="title">Extended Play</div>
+              <div class="desc">Loss remodels memory.</div>
+            </div>
+          </a>
+        </article>
+
+        <article class="card">
+          <a href="/works/the-london-opening/">
+            <img class="thumb" src="/images/the-london-opening/poster.jpg" alt="The London Opening ident">
+            <div class="meta">
+              <div class="kicker">Brand</div>
+              <div class="title">The London Opening</div>
+              <div class="desc">Company ident & title sequence.</div>
+            </div>
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <footer class="site-foot">© The London. All Rights Reserved.</footer>
+  </div>
 </body>
 </html>
