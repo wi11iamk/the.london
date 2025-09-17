@@ -14,9 +14,11 @@
   <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0B0C10">
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#0B0C10">
+  <meta name="color-scheme" content="dark light">
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="The London">
   <meta property="og:title" content="The London — Stories & Films">
   <meta property="og:description" content="The London. Ratio et veritas. A portfolio of films, scripts, and storyboards.">
   <meta property="og:url" content="https://the.london/">
@@ -29,6 +31,8 @@
   <link rel="stylesheet" href="/assets/css/site.css" />
 </head>
 <body>
+  <a href="#content" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Skip to content</a>
+
   <div class="wrap">
     <header class="site-header" aria-label="Site header">
       <a class="brand" href="/">THE&nbsp;LONDON</a>
@@ -39,45 +43,74 @@
       </nav>
     </header>
 
-    <!-- Hero (logo reel). Will gracefully hide for reduced-motion users -->
+    <!-- Hero (logo reel). Overlay on desktop, stacks on mobile by CSS -->
     <section class="hero hero--logo" aria-label="Logo reel">
       <video
         src="/assets/logo/theLondon_4k24.mp4"
         playsinline muted autoplay loop preload="metadata"
         poster="/assets/theLondon.jpg"
-        aria-label="The London logo reel"></video>
+        aria-label="The London logo reel">
+      </video>
       <p class="tagline">Ratio et veritas.</p>
     </section>
 
-    <!-- Featured works (replace with real entries as you add them) -->
-    <section class="section" aria-labelledby="works-h">
-      <h2 id="works-h" class="h2">Featured</h2>
-      <div class="grid">
-        <article class="card">
-          <a href="/works/extended-play/">
-            <img class="thumb" src="/images/extended-play/poster.jpg" alt="Extended Play poster">
-            <div class="meta">
-              <div class="kicker">Short Film</div>
-              <div class="title">Extended Play</div>
-              <div class="desc">Loss remodels memory.</div>
-            </div>
-          </a>
-        </article>
+    <main id="content">
+      <!-- Featured works -->
+      <section class="section" aria-labelledby="works-h">
+        <h2 id="works-h" class="h2">Featured</h2>
+        <div class="grid">
+          <article class="card">
+            <a href="/works/extended-play/">
+              <img class="thumb" src="/images/extended-play/poster.jpg"
+                   alt="Extended Play poster" loading="lazy" decoding="async">
+              <div class="meta">
+                <div class="kicker">Short Film</div>
+                <div class="title">Extended Play</div>
+                <div class="desc">Loss remodels memory.</div>
+              </div>
+            </a>
+          </article>
 
-        <article class="card">
-          <a href="/works/the-london-opening/">
-            <img class="thumb" src="/assets/theLondon.jpg" alt="The London Opening ident">
-            <div class="meta">
-              <div class="kicker">Brand</div>
-              <div class="title">The London Opening</div>
-              <div class="desc">Company ident & title sequence.</div>
-            </div>
-          </a>
-        </article>
-      </div>
-    </section>
+          <article class="card">
+            <a href="/works/the-london-opening/">
+              <img class="thumb" src="/assets/theLondon.jpg"
+                   alt="The London Opening ident" loading="lazy" decoding="async">
+              <div class="meta">
+                <div class="kicker">Brand</div>
+                <div class="title">The London Opening</div>
+                <div class="desc">Company ident &amp; title sequence.</div>
+              </div>
+            </a>
+          </article>
+        </div>
+      </section>
+    </main>
 
     <footer class="site-foot">© The London. All Rights Reserved.</footer>
   </div>
+
+  <!-- Optional: structured data for richer previews -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Organization",
+    "name":"The London",
+    "url":"https://the.london",
+    "logo":"https://the.london/favicon.svg"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"VideoObject",
+    "name":"The London — Logo Reel",
+    "description":"Eight-second logo animation introducing The London.",
+    "thumbnailUrl":"https://the.london/assets/og.jpg",
+    "uploadDate":"2025-09-16",
+    "duration":"PT8S",
+    "contentUrl":"https://the.london/assets/logo/theLondon_4k24.mp4",
+    "embedUrl":"https://the.london/"
+  }
+  </script>
 </body>
 </html>
