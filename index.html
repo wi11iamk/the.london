@@ -16,7 +16,7 @@
   <meta name="theme-color" content="#0B0C10">
   <meta name="color-scheme" content="dark light">
 
-  <!-- Open Graph / Twitter -->
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="The London">
   <meta property="og:title" content="The London — Stories & Films">
@@ -33,14 +33,13 @@
 <body>
   <a href="#content" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Skip to content</a>
 
-  <!-- Splash ident: shows once per session; overlayed, centered -->
+  <!-- FULLSCREEN INTRO (overlay) -->
   <div id="splash" class="splash" hidden aria-hidden="true">
     <button id="skipIntro" class="splash__skip" aria-label="Skip intro">Skip</button>
     <video id="introVideo"
       src="/assets/logo/theLondon_4k24.mp4"
-      playsinline muted autoplay
-      preload="metadata"
       poster="/assets/theLondon.jpg"
+      playsinline muted preload="metadata"
       aria-label="The London logo reel"></video>
   </div>
 
@@ -55,10 +54,11 @@
     </header>
 
     <main id="content">
-      <!-- Compact intro instead of a huge banner -->
+      <!-- Compact intro (no giant banner) -->
       <section class="section intro">
         <h1 class="h1" style="margin-bottom:6px;">Ratio et veritas.</h1>
-        <p class="lead">The London is a film studio and production company. We aim to examine the truth.</p>
+        <p class="lead">The London is a film studio and production company—unexpected and methodical,
+          like its namesake opening. We make work that chases the truth and is built with reason.</p>
       </section>
 
       <!-- Featured works -->
@@ -95,35 +95,57 @@
     <footer class="site-foot">© The London. All Rights Reserved.</footer>
   </div>
 
-  <!-- Structured data (optional) -->
+  <!-- Organization schema (optional) -->
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"Organization","name":"The London","url":"https://the.london","logo":"https://the.london/favicon.svg"}
   </script>
 
-  <!-- Intro logic: respects reduced motion + only once per session -->
+  <!-- INTRO CONTROLLER -->
   <script>
   (function(){
     const splash = document.getElementById('splash');
-    const vid = document.getElementById('introVideo');
-    const skip = document.getElementById('skipIntro');
+    const vid    = document.getElementById('introVideo');
+    const skip   = document.getElementById('skipIntro');
+
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const seen = sessionStorage.getItem('introSeen') === '1';
 
     function hideSplash(){
       splash.classList.add('is-hiding');
-      setTimeout(()=>{ splash.hidden = true; splash.classList.remove('is-active','is-hiding'); }, 650);
+      document.body.classList.remove('no-scroll');
+      setTimeout(() => {
+        splash.hidden = true;
+        splash.classList.remove('is-active','is-hiding');
+        vid.removeAttribute('src'); // stop network once done
+      }, 650);
     }
 
+    // Show only when allowed and not seen this session
     if (!prefersReduced && !seen) {
+      // Prepare overlay
       splash.hidden = false;
-      // allow transition
-      requestAnimationFrame(()=> splash.classList.add('is-active'));
-      sessionStorage.setItem('introSeen','1');
+      document.body.classList.add('no-scroll');
+      requestAnimationFrame(() => splash.classList.add('is-active'));
+      sessionStorage.setItem('introSeen', '1');
 
+      // Make autoplay robust (Safari/Chrome)
+      vid.muted = true;               // property as well as attribute
+      vid.setAttribute('muted','');   // ensure attribute is present
+      vid.playsInline = true;
+
+      // Try to start; if blocked, just fade out quickly
+      const start = () => vid.play().catch(() => setTimeout(hideSplash, 400));
+      // As soon as we can play, start
+      if (vid.readyState >= 2) start();
+      else vid.addEventListener('canplay', start, { once:true });
+
+      // End behavior
       vid.addEventListener('ended', hideSplash, { once:true });
       skip.addEventListener('click', hideSplash);
-      // safety timeout (8s video + padding)
-      setTimeout(hideSplash, 9000);
+
+      // Safety timeout (video ~8s + buffer)
+      setTimeout(() => { if (!vid.paused) return; hideSplash(); }, 9000);
+      window.addEventListener('keydown', e => { if (e.key === 'Escape') hideSplash(); });
     }
   })();
   </script>
