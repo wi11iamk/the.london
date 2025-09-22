@@ -1,14 +1,9 @@
 /* ===============================
    THE LONDON — site.css
-   Palette + layout tuned to match the ident.
-   Overlay strategy:
-     • Desktop: captions overlay media (with gradient for readability).
-     • Mobile (≤640px): captions stack below media by default.
-     • Add .force-overlay to keep overlay on mobile for select tiles.
+   Overlay intro, mobile-friendly cards, minimal aesthetic.
    =============================== */
 
 :root{
-  /* Colors */
   --bg:#0B0C10;        /* frame */
   --paper:#D7E3EB;     /* glacier paper */
   --ink:#111319;
@@ -16,215 +11,124 @@
   --muted:#8894A1;
   --accent:#F4F8FB;    /* title tint */
 
-  /* Radii / shadows */
   --radius:16px;
   --shadow:0 10px 30px rgba(0,0,0,.25);
 
-  /* Sizing */
   --wrap-max:1100px;
   --pad:32px;
 }
 
-/* ========== Base ========== */
+/* Base */
 *{box-sizing:border-box}
 html,body{
   margin:0;
   background:var(--bg);
   color:var(--paper);
-  font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Inter,Inter var,Helvetica,Arial,sans-serif;
+  font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;
   -webkit-text-size-adjust:100%;
   text-rendering:optimizeLegibility;
 }
 img{max-width:100%;height:auto;display:block}
 a{color:inherit;text-decoration:none}
 a:focus-visible, button:focus-visible{
-  outline:2px solid var(--accent);
-  outline-offset:3px;
-  border-radius:6px;
+  outline:2px solid var(--accent); outline-offset:3px; border-radius:6px;
 }
 .wrap{max-width:var(--wrap-max);margin:0 auto;padding:var(--pad)}
 @media (max-width:720px){ .wrap{padding:20px} }
 
-/* ========== Type scales ========== */
+.skiplink{
+  position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden
+}
+.skiplink:focus{left:12px;top:12px;width:auto;height:auto;background:#000;color:#fff;padding:8px 12px;border-radius:8px}
+
+/* Type */
 .h1{font-size:2rem;letter-spacing:.02em;margin:0 0 6px}
 .h2{font-size:1.4rem;margin:0 0 10px}
+.lead{color:var(--accent);max-width:72ch}
 
-/* ========== Header / Nav ========== */
-.site-header{
-  display:flex;align-items:center;justify-content:space-between;
-  margin:4px 0 28px; gap:16px;
-}
+/* Header / Nav */
+.site-header{display:flex;align-items:center;justify-content:space-between;margin:4px 0 28px;gap:16px}
 .brand{font-weight:800;letter-spacing:.12em;white-space:nowrap}
 .nav{display:flex;gap:20px;flex-wrap:wrap}
 .nav a{opacity:.95}
 .nav a:hover{opacity:1}
 
-/* ========== Hero / Tiles ========== */
-/* Default: overlay on larger screens */
-.hero{
-  position:relative;
-  border:2px solid var(--edge);
-  border-radius:var(--radius);
-  overflow:hidden;
-  background:var(--bg);
-  box-shadow:var(--shadow);
-  isolation:isolate; /* ensure gradient sits under text */
-}
-.hero > video,
-.hero > img{
-  width:100%;
-  height:auto;
-  display:block;
-}
-.hero--logo video{filter:saturate(0.96)}
-
-/* Gradient to support overlaid text (desktop behavior) */
-.hero::after{
-  content:"";
-  position:absolute; inset:0;
-  background:linear-gradient(to top, rgba(11,12,16,.66) 28%, transparent 60%);
-  pointer-events:none;
-}
-
-/* Caption overlay by default (desktop) */
-.hero .tagline{
-  position:absolute; left:16px; bottom:12px; z-index:1;
-  color:var(--accent);
-  font-weight:700; letter-spacing:.06em;
-  text-shadow:0 2px 8px rgba(0,0,0,.5);
-  /* Scale smoothly on wide/narrow screens */
-  font-size:clamp(14px, 1.4vw + .5rem, 20px);
-  max-width:calc(100% - 32px);
-}
-
-/* Section wrapper */
+/* Sections */
 .section{margin:40px 0}
 
-/* ========== Card grid ========== */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
-  gap:18px;
-}
+/* Grid + Cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
 .card{
-  background:var(--paper);
-  color:var(--ink);
-  border-radius:var(--radius);
-  overflow:hidden;
-  border:2px solid var(--edge);
+  background:var(--paper); color:var(--ink);
+  border-radius:var(--radius); overflow:hidden; border:2px solid var(--edge);
   transition:transform .12s ease-out;
 }
 .card:hover{ transform:translateY(-2px) }
-.thumb{
-  aspect-ratio:16/9;
-  object-fit:cover;
-  background:#cfd7de;
-}
+.thumb{aspect-ratio:16/9;object-fit:cover;background:#cfd7de}
 .card .meta{padding:14px 14px 16px}
 .kicker{font-size:.8rem;color:#4b5662;text-transform:uppercase;letter-spacing:.08em}
 .title{font-weight:800;margin:6px 0 4px}
 .desc{color:#2d333b}
 
-/* ========== Work page ========== */
-.columns{
-  display:grid; grid-template-columns:1fr; gap:24px; margin-top:20px;
-}
-@media(min-width:860px){
-  .columns{ grid-template-columns:2fr 1fr }
-}
-.gallery{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-  gap:10px;
-}
-.gallery img{
-  aspect-ratio:16/9; object-fit:cover;
-  border-radius:8px; border:1px solid var(--edge);
-  cursor:zoom-in;
-}
-
-/* Buttons */
-.btn{
-  display:inline-block; background:var(--paper); color:var(--ink);
-  padding:10px 14px; border-radius:999px; border:2px solid var(--edge);
-}
-.btn:hover{ transform:translateY(-1px) }
-
 /* Footer */
 .site-foot{margin:64px 0 16px;color:var(--muted);font-size:.9rem;text-align:center}
 
-/* ========== Accessibility & Motion ========== */
+/* Motion / accessibility */
 @media (prefers-reduced-motion:reduce){
-  .hero video{display:none}
   .card{transition:none}
 }
 
-/* =======================================================
-   Mobile-first nuance:
-   • Default on ≤640px: captions STACK below media (no overlay).
-   • Optional .force-overlay: keep overlay on mobile for select tiles.
-   ======================================================= */
+/* ===============================
+   Fullscreen splash intro (video)
+   =============================== */
+.no-scroll { overflow:hidden; height:100vh; }
 
-/* Default: stack on small screens */
-@media (max-width:640px){
-  /* Move caption into normal flow under the media */
-  .hero .tagline{
-    position:static;
-    display:block;
-    padding:12px 14px 14px;
-    text-shadow:none;
-    white-space:normal;
-    max-width:none;
-    font-size:1rem;
-  }
-  /* Remove gradient when stacked */
-  .hero::after{ display:none; }
-}
-
-/* Optional override: keep overlay on specific heroes at small sizes */
-@media (max-width:640px){
-  .hero.force-overlay .tagline{
-    position:absolute; left:16px; bottom:12px;
-    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
-    overflow:hidden;
-    text-shadow:0 2px 8px rgba(0,0,0,.5);
-    font-size:clamp(14px, 3.6vw, 18px);
-    max-width:calc(100% - 32px);
-  }
-  .hero.force-overlay::after{
-    content:""; position:absolute; inset:0;
-    background:linear-gradient(to top, rgba(11,12,16,.66) 32%, transparent 64%);
-    display:block;
-  }
-}
-
-/* Optional: turn off gradient entirely where not desired */
-.hero.no-gradient::after{ display:none }
-```0
-
-/* === Splash ident overlay === */
 .splash{
-  position:fixed; inset:0; z-index:1000;
+  position:fixed; top:0; left:0; right:0; bottom:0;
+  z-index:2147483647;
   display:none; place-items:center;
-  background:var(--bg); opacity:0;
-  transition:opacity .6s ease;
+  background:var(--bg);
+  opacity:0; transition:opacity .6s ease;
 }
 .splash.is-active{ display:grid; opacity:1; }
 .splash.is-hiding{ opacity:0; }
+
 .splash video{
-  width:min(80vw, 960px); height:auto; display:block;
-  border:2px solid var(--edge); border-radius:var(--radius);
+  display:block;
+  max-width:min(90vw,960px);
+  max-height:90vh;
+  object-fit:contain;
+  border:2px solid var(--edge);
+  border-radius:var(--radius);
   box-shadow:var(--shadow);
 }
 .splash__skip{
   position:absolute; top:16px; right:16px;
-  background:rgba(0,0,0,.5); color:#fff;
-  border:1px solid #333; border-radius:999px;
+  background:rgba(0,0,0,.55); color:#fff;
+  border:1px solid #2b2b2b; border-radius:999px;
   padding:8px 12px; cursor:pointer;
 }
-@media (max-width:640px){ .splash video{ width:92vw } }
+@media (max-width:640px){ .splash video{ max-width:92vw } }
 @media (prefers-reduced-motion:reduce){ .splash{ display:none !important } }
 
-/* === Intro copy === */
-.lead{color:var(--accent); max-width:72ch}
-.people-grid .person-thumb{ aspect-ratio:1/1; object-fit:cover; }
+/* ===============================
+   (If you still use image/video "hero" tiles elsewhere)
+   Desktop overlays; stack captions on mobile by default.
+   =============================== */
+.hero{position:relative;border:2px solid var(--edge);border-radius:var(--radius);overflow:hidden;background:var(--bg);box-shadow:var(--shadow);isolation:isolate}
+.hero>video,.hero>img{width:100%;height:auto;display:block}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to top, rgba(11,12,16,.66) 28%, transparent 60%);pointer-events:none}
+.hero .tagline{position:absolute;left:16px;bottom:12px;z-index:1;color:var(--accent);font-weight:700;letter-spacing:.06em;text-shadow:0 2px 8px rgba(0,0,0,.5);font-size:clamp(14px, 1.4vw + .5rem, 20px);max-width:calc(100% - 32px)}
+@media (max-width:640px){
+  .hero .tagline{position:static;display:block;padding:12px 14px 14px;text-shadow:none;white-space:normal;max-width:none;font-size:1rem}
+  .hero::after{display:none}
+}
+@media (max-width:640px){
+  .hero.force-overlay .tagline{
+    position:absolute;left:16px;bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-shadow:0 2px 8px rgba(0,0,0,.5);font-size:clamp(14px,3.6vw,18px);max-width:calc(100% - 32px)
+  }
+  .hero.force-overlay::after{content:"";position:absolute;inset:0;background:linear-gradient(to top, rgba(11,12,16,.66) 32%, transparent 64%);display:block}
+}
+
+/* People page (future) */
+.people-grid .person-thumb{aspect-ratio:1/1;object-fit:cover} 
