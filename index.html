@@ -7,7 +7,7 @@
   <meta name="description" content="The London. Ratio et veritas. A portfolio of films, scripts, and storyboards." />
   <link rel="canonical" href="https://the.london/" />
 
-  <!-- Icons -->
+  <!-- Icons (root) -->
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -16,7 +16,7 @@
   <meta name="theme-color" content="#0B0C10">
   <meta name="color-scheme" content="dark light">
 
-  <!-- Open Graph -->
+  <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="The London">
   <meta property="og:title" content="The London — Stories & Films">
@@ -31,15 +31,15 @@
   <link rel="stylesheet" href="/assets/css/site.css" />
 </head>
 <body>
-  <a href="#content" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Skip to content</a>
+  <a href="#content" class="skiplink">Skip to content</a>
 
   <!-- FULLSCREEN INTRO (overlay) -->
   <div id="splash" class="splash" hidden aria-hidden="true">
     <button id="skipIntro" class="splash__skip" aria-label="Skip intro">Skip</button>
     <video id="introVideo"
-      src="/assets/logo/theLondon_4k24.mp4"
+      src="/assets/theLondon_4k24.mp4"
       poster="/assets/theLondon.jpg"
-      playsinline muted preload="metadata"
+      playsinline muted autoplay preload="metadata"
       aria-label="The London logo reel"></video>
   </div>
 
@@ -54,11 +54,13 @@
     </header>
 
     <main id="content">
-      <!-- Compact intro (no giant banner) -->
+      <!-- Compact intro -->
       <section class="section intro">
         <h1 class="h1" style="margin-bottom:6px;">Ratio et veritas.</h1>
-        <p class="lead">The London is a film studio and production company—unexpected and methodical,
-          like its namesake opening. We make work that chases the truth and is built with reason.</p>
+        <p class="lead">
+          The London is a film studio and production company—unexpected and methodical,
+          like its namesake opening. We make work that chases the truth and is built with reason.
+        </p>
       </section>
 
       <!-- Featured works -->
@@ -116,35 +118,29 @@
       setTimeout(() => {
         splash.hidden = true;
         splash.classList.remove('is-active','is-hiding');
-        vid.removeAttribute('src'); // stop network once done
+        vid.removeAttribute('src'); vid.load();   // stop network after fade
       }, 650);
     }
 
-    // Show only when allowed and not seen this session
     if (!prefersReduced && !seen) {
-      // Prepare overlay
       splash.hidden = false;
       document.body.classList.add('no-scroll');
       requestAnimationFrame(() => splash.classList.add('is-active'));
       sessionStorage.setItem('introSeen', '1');
 
-      // Make autoplay robust (Safari/Chrome)
-      vid.muted = true;               // property as well as attribute
-      vid.setAttribute('muted','');   // ensure attribute is present
-      vid.playsInline = true;
+      // Autoplay hardening for iOS/Safari/Chrome
+      vid.muted = true; vid.setAttribute('muted',''); vid.playsInline = true; vid.autoplay = true;
 
-      // Try to start; if blocked, just fade out quickly
-      const start = () => vid.play().catch(() => setTimeout(hideSplash, 400));
-      // As soon as we can play, start
-      if (vid.readyState >= 2) start();
-      else vid.addEventListener('canplay', start, { once:true });
+      const startPlay = () => vid.play().catch(() => setTimeout(hideSplash, 400));
+      if (vid.readyState >= 2) startPlay();
+      else vid.addEventListener('loadeddata', startPlay, { once:true });
 
-      // End behavior
       vid.addEventListener('ended', hideSplash, { once:true });
+      vid.addEventListener('error', hideSplash);
       skip.addEventListener('click', hideSplash);
 
-      // Safety timeout (video ~8s + buffer)
-      setTimeout(() => { if (!vid.paused) return; hideSplash(); }, 9000);
+      // Safety: if nothing moves after 3s, fade out
+      setTimeout(() => { if (vid.currentTime < 0.01) hideSplash(); }, 3000);
       window.addEventListener('keydown', e => { if (e.key === 'Escape') hideSplash(); });
     }
   })();
