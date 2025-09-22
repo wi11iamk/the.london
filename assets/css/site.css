@@ -201,3 +201,30 @@ a:focus-visible, button:focus-visible{
 /* Optional: turn off gradient entirely where not desired */
 .hero.no-gradient::after{ display:none }
 ```0
+
+/* === Splash ident overlay === */
+.splash{
+  position:fixed; inset:0; z-index:1000;
+  display:none; place-items:center;
+  background:var(--bg); opacity:0;
+  transition:opacity .6s ease;
+}
+.splash.is-active{ display:grid; opacity:1; }
+.splash.is-hiding{ opacity:0; }
+.splash video{
+  width:min(80vw, 960px); height:auto; display:block;
+  border:2px solid var(--edge); border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+.splash__skip{
+  position:absolute; top:16px; right:16px;
+  background:rgba(0,0,0,.5); color:#fff;
+  border:1px solid #333; border-radius:999px;
+  padding:8px 12px; cursor:pointer;
+}
+@media (max-width:640px){ .splash video{ width:92vw } }
+@media (prefers-reduced-motion:reduce){ .splash{ display:none !important } }
+
+/* === Intro copy === */
+.lead{color:var(--accent); max-width:72ch}
+.people-grid .person-thumb{ aspect-ratio:1/1; object-fit:cover; }
